@@ -1,14 +1,19 @@
 {
+  "version": "1.0.0",
   "name": "Bigger Picture",
-  "version": "2012.4.1",
-  "description": "Not an april fools joke.",
+  "description": "Make online photo galleries more pretty.",
+  "manifest_version": 2,
+  "permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
   "content_scripts": [
     {
       "matches": [
         "http://www.boston.com/bigpicture/*.html"
       ],
       "css": ["css/normalize.css","css/bigslides.css"],
-      "js": ["jquery.js", "js/content.js"],
+      "js": [ "jquery.js", "js/content.js"],
       "run_at": "document_end"
     }
   ]
