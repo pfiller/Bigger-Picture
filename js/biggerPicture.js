@@ -60,7 +60,6 @@
     };
 
     Gallery.prototype.show_current = function() {
-      console.log("HI");
       return this.slides[this.current_index].show_slide($(window).height(), $(window).width());
     };
 
@@ -140,7 +139,6 @@
     };
 
     Slide.prototype.image_loaded = function() {
-      console.log(">>>>>> Loaded image");
       this.loaded = true;
       this.width = this.img.width;
       this.height = this.img.height;
@@ -151,13 +149,11 @@
 
     Slide.prototype.show_slide = function(h, w) {
       if (!this.loaded) {
-        console.log(">>>>>> Pending!!");
         return this.pending_show = {
           h: h,
           w: w
         };
       } else {
-        console.log(">>>>>> Build it, damn it!!");
         if (!this.element || this.lh !== h || this.lw !== w) {
           this.build_element(h, w);
         }
@@ -171,7 +167,6 @@
 
     Slide.prototype.build_element = function(h, w) {
       var new_wh;
-      console.log(">>>>>>> build element");
       if (!this.element) {
         this.element = $("#" + this.id);
       }
@@ -183,8 +178,6 @@
         width: new_wh.w,
         height: new_wh.h
       });
-      console.dir(this.element);
-      console.dir(this.img);
       return this.element.html(this.img);
     };
 
