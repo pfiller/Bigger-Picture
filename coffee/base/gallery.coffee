@@ -17,12 +17,12 @@ class BiggerPicture.Gallery
     @show_current()
 
   set_up_image: (image) ->
-    image.id = "slide-#{@slides.length}"
-    @ul.append($("<li >",{id: image.id}))
-    @slides.push new BiggerPicture.Slide( image )
+    list_image = $("<li >").hide()
+    @slides.push new BiggerPicture.Slide(image, list_image)
+    @ul.append(list_image)
 
   show_current: () ->
-    @slides[@current_index].show_slide( $(window).height(), $(window).width())
+    @slides[@current_index].show_slide()
 
   hide_current: () ->
     @slides[@current_index].hide_slide()
