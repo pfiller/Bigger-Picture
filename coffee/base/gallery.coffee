@@ -18,6 +18,8 @@ class BiggerPicture.Gallery
     @set_up_listeners()
     @show_current()
 
+    window.onresize = @trigger_resize
+
   set_up_image: (image) ->
     list_image = $("<li >").hide()
     @ul.append(list_image)
@@ -45,3 +47,6 @@ class BiggerPicture.Gallery
       @hide_current()
       @current_index = to
       @show_current()
+
+  trigger_resize: () =>
+    @slides[@current_index].set_image_size_for_display()

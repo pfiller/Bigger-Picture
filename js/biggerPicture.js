@@ -53,6 +53,7 @@
     });
 
     function Gallery(images) {
+      this.trigger_resize = __bind(this.trigger_resize, this);
       var image, _i, _len;
       this.container.append(this.overlay, this.ul);
       $("body").append(this.container);
@@ -62,6 +63,7 @@
       }
       this.set_up_listeners();
       this.show_current();
+      window.onresize = this.trigger_resize;
     }
 
     Gallery.prototype.set_up_image = function(image) {
@@ -101,6 +103,10 @@
         this.current_index = to;
         return this.show_current();
       }
+    };
+
+    Gallery.prototype.trigger_resize = function() {
+      return this.slides[this.current_index].set_image_size_for_display();
     };
 
     return Gallery;
