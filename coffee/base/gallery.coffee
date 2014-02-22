@@ -10,16 +10,18 @@ class BiggerPicture.Gallery
   ul: $("<ul />", { class: "bigger-picture-list" })
 
   constructor: (images) ->
-    @set_up_image(image) for image in images
     @container.append(@overlay, @ul)
     $("body").append(@container)
+
+    @set_up_image(image) for image in images
+
     @set_up_listeners()
     @show_current()
 
   set_up_image: (image) ->
     list_image = $("<li >").hide()
-    @slides.push new BiggerPicture.Slide(image, list_image)
     @ul.append(list_image)
+    @slides.push new BiggerPicture.Slide(image, list_image)
 
   show_current: () ->
     @slides[@current_index].show_slide()

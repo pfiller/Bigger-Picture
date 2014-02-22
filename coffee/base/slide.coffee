@@ -3,35 +3,31 @@ BiggerPicture = BiggerPicture or {}
 class BiggerPicture.Slide
 
   constructor: (@image, @element) ->
+    @list = @element.parents("ul")
+
     @img = new Image()
     @img.addEventListener "load", @image_loaded
     @img.src = @image.src
 
     @element.append(@img)
 
-  get_resize_dimensions: (w,h) ->
-    window_height = $(window).height
-    window_width = $(window).width
+  set_image_size_for_display: () ->
+    list_height = @list.height()
+    list_width = @list.width()
 
-    if window_width > w or window_height > h
-      scale = if window_width/w < window_height/h then window_width/w else window_height/h
-      {
-        w: Math.floor(w * scale)
-        h: Math.floor(h * scale)
-      }
+    if @raw_image_height > list_height or @raw_image_width > list_width
+      scale = if @raw_image_width > @raw_image_height then list_width / @raw_image_width else list_height / @raw_image_height
     else
-      {w: w, h: h}
+      scale = 1
+
+    @img.width = Math.floor(@raw_image_width * scale)
+    @img.height = Math.floor(@raw_image_height * scale)
 
   image_loaded: =>
+    @raw_image_height = @img.height
+    @raw_image_width = @img.width
+
     @loaded = true
-
-    width = @img.width
-    height = @img.height
-
-    new_wh = @get_resize_dimensions width, height
-    @img.width = new_wh.w
-    @img.height = new_wh.h
-
     @show_slide() if @pending_show
 
   show_slide: () ->
@@ -39,6 +35,7 @@ class BiggerPicture.Slide
       @pending_show = true
       return
 
+    @set_image_size_for_display()
     @element.fadeIn("fast")
     @pending_show = false
 

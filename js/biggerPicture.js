@@ -54,12 +54,12 @@
 
     function Gallery(images) {
       var image, _i, _len;
+      this.container.append(this.overlay, this.ul);
+      $("body").append(this.container);
       for (_i = 0, _len = images.length; _i < _len; _i++) {
         image = images[_i];
         this.set_up_image(image);
       }
-      this.container.append(this.overlay, this.ul);
-      $("body").append(this.container);
       this.set_up_listeners();
       this.show_current();
     }
@@ -67,8 +67,8 @@
     Gallery.prototype.set_up_image = function(image) {
       var list_image;
       list_image = $("<li >").hide();
-      this.slides.push(new BiggerPicture.Slide(image, list_image));
-      return this.ul.append(list_image);
+      this.ul.append(list_image);
+      return this.slides.push(new BiggerPicture.Slide(image, list_image));
     };
 
     Gallery.prototype.show_current = function() {
@@ -114,38 +114,30 @@
       this.image = image;
       this.element = element;
       this.image_loaded = __bind(this.image_loaded, this);
+      this.list = this.element.parents("ul");
       this.img = new Image();
       this.img.addEventListener("load", this.image_loaded);
       this.img.src = this.image.src;
       this.element.append(this.img);
     }
 
-    Slide.prototype.get_resize_dimensions = function(w, h) {
-      var scale, window_height, window_width;
-      window_height = $(window).height;
-      window_width = $(window).width;
-      if (window_width > w || window_height > h) {
-        scale = window_width / w < window_height / h ? window_width / w : window_height / h;
-        return {
-          w: Math.floor(w * scale),
-          h: Math.floor(h * scale)
-        };
+    Slide.prototype.set_image_size_for_display = function() {
+      var list_height, list_width, scale;
+      list_height = this.list.height();
+      list_width = this.list.width();
+      if (this.raw_image_height > list_height || this.raw_image_width > list_width) {
+        scale = this.raw_image_width > this.raw_image_height ? list_width / this.raw_image_width : list_height / this.raw_image_height;
       } else {
-        return {
-          w: w,
-          h: h
-        };
+        scale = 1;
       }
+      this.img.width = Math.floor(this.raw_image_width * scale);
+      return this.img.height = Math.floor(this.raw_image_height * scale);
     };
 
     Slide.prototype.image_loaded = function() {
-      var height, new_wh, width;
+      this.raw_image_height = this.img.height;
+      this.raw_image_width = this.img.width;
       this.loaded = true;
-      width = this.img.width;
-      height = this.img.height;
-      new_wh = this.get_resize_dimensions(width, height);
-      this.img.width = new_wh.w;
-      this.img.height = new_wh.h;
       if (this.pending_show) {
         return this.show_slide();
       }
@@ -156,6 +148,7 @@
         this.pending_show = true;
         return;
       }
+      this.set_image_size_for_display();
       this.element.fadeIn("fast");
       return this.pending_show = false;
     };
