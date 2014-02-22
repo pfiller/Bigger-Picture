@@ -8,7 +8,6 @@
     function App() {
       var images, ss;
       images = $(".bpImageTop, .bpBoth");
-      $("body").html("");
       ss = new BiggerPicture.Gallery(images);
     }
 
@@ -29,8 +28,16 @@
 
     Gallery.prototype.current_index = 0;
 
+    Gallery.prototype.container = $("<div />", {
+      "class": "bigger-picture"
+    });
+
+    Gallery.prototype.overlay = $("<div />", {
+      "class": "bigger-picture-overlay"
+    });
+
     Gallery.prototype.ul = $("<ul />", {
-      id: "slideshow"
+      "class": "bigger-picture-list"
     });
 
     function Gallery(images) {
@@ -39,7 +46,8 @@
         image = images[_i];
         this.set_up_image(image);
       }
-      $("body").append(this.ul);
+      this.container.append(this.overlay, this.ul);
+      $("body").append(this.container);
       this.set_up_listeners();
       this.show_current();
     }

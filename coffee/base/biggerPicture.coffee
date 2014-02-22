@@ -4,7 +4,6 @@ class BiggerPicture.App
 
   constructor: () ->
     images = $(".bpImageTop, .bpBoth")
-    $("body").html("")
     ss = new BiggerPicture.Gallery(images)
 
 setTimeout () ->

@@ -4,11 +4,15 @@ class BiggerPicture.Gallery
 
   slides: []
   current_index: 0
-  ul: $("<ul />", { id: "slideshow" })
+
+  container: $("<div />", { class: "bigger-picture" })
+  overlay: $("<div />", { class: "bigger-picture-overlay" })
+  ul: $("<ul />", { class: "bigger-picture-list" })
 
   constructor: (images) ->
     @set_up_image(image) for image in images
-    $("body").append(@ul)
+    @container.append(@overlay, @ul)
+    $("body").append(@container)
     @set_up_listeners()
     @show_current()
 
