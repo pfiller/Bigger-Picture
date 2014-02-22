@@ -6,9 +6,20 @@
 
   BiggerPicture.App = (function() {
     function App() {
-      var images, ss;
-      images = $(".bpImageTop, .bpBoth");
-      ss = new BiggerPicture.Gallery(images);
+      var container, containers, image_el, images, _i, _len;
+      containers = $(".bpImageTop, .bpBoth");
+      images = [];
+      for (_i = 0, _len = containers.length; _i < _len; _i++) {
+        container = containers[_i];
+        container = $(container);
+        image_el = container.find("img").first();
+        images.push({
+          image_el: image_el,
+          src: image_el.attr('src'),
+          caption: container.find(".bpCaption").remove("a, div").text()
+        });
+      }
+      new BiggerPicture.Gallery(images);
     }
 
     return App;
@@ -53,18 +64,11 @@
     }
 
     Gallery.prototype.set_up_image = function(image) {
-      var caption, id, src;
-      image = $(image);
-      src = image.find(".bpImage").first().prop("src");
-      caption = image.find(".bpCaption");
-      caption.find(".photoNum").remove();
-      caption.find(".cf, a").remove();
-      caption = caption.text();
-      id = "slide-" + this.slides.length;
+      image.id = "slide-" + this.slides.length;
       this.ul.append($("<li >", {
-        id: id
+        id: image.id
       }));
-      return this.slides.push(new BiggerPicture.Slide(src, caption, id));
+      return this.slides.push(new BiggerPicture.Slide(image));
     };
 
     Gallery.prototype.show_current = function() {
@@ -114,10 +118,8 @@
 
     Slide.prototype.lh = -1;
 
-    function Slide(src, caption, id) {
-      this.src = src;
-      this.caption = caption;
-      this.id = id;
+    function Slide(image) {
+      this.src = image.src, this.caption = image.caption, this.id = image.id;
       this.create_image();
     }
 

@@ -8,7 +8,8 @@ class BiggerPicture.Slide
   lw: -1
   lh: -1
 
-  constructor: (@src, @caption, @id) ->
+  constructor: (image) ->
+    {@src, @caption, @id} = image
     @create_image()
 
   get_resize_dimensions: (w,h,tw,th) ->

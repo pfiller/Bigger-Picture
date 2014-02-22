@@ -17,17 +17,9 @@ class BiggerPicture.Gallery
     @show_current()
 
   set_up_image: (image) ->
-    image = $(image)
-    src = image.find(".bpImage").first().prop("src")
-    caption = image.find(".bpCaption")
-
-    caption.find(".photoNum").remove()
-    caption.find(".cf, a").remove()
-    caption = caption.text()
-
-    id = "slide-#{@slides.length}"
-    @ul.append($("<li >",{id: id}))
-    @slides.push new BiggerPicture.Slide( src, caption, id )
+    image.id = "slide-#{@slides.length}"
+    @ul.append($("<li >",{id: image.id}))
+    @slides.push new BiggerPicture.Slide( image )
 
   show_current: () ->
     @slides[@current_index].show_slide( $(window).height(), $(window).width())
