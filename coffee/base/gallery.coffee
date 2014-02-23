@@ -10,7 +10,7 @@ class BiggerPicture.Gallery
 
   constructor: (images) ->
     @container.append(@overlay, @ul)
-    $("body").append(@container)
+    $("body").addClass("bigger-picture-active").append(@container)
 
     @set_up_image(image) for image in images
 
@@ -20,6 +20,7 @@ class BiggerPicture.Gallery
     window.onresize = @trigger_resize
 
   remove: () ->
+    $("body").removeClass("bigger-picture-active")
     @container.remove()
     delete @slides
 

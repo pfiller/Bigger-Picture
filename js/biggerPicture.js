@@ -55,7 +55,7 @@
       this.test_keypress = __bind(this.test_keypress, this);
       var image, _i, _len;
       this.container.append(this.overlay, this.ul);
-      $("body").append(this.container);
+      $("body").addClass("bigger-picture-active").append(this.container);
       for (_i = 0, _len = images.length; _i < _len; _i++) {
         image = images[_i];
         this.set_up_image(image);
@@ -66,6 +66,7 @@
     }
 
     Gallery.prototype.remove = function() {
+      $("body").removeClass("bigger-picture-active");
       this.container.remove();
       return delete this.slides;
     };
