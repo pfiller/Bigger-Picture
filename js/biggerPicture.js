@@ -11,27 +11,18 @@
       "class": "bigger-picture"
     });
 
-    Gallery.prototype.overlay = $("<div />", {
-      "class": "bigger-picture-overlay"
-    });
-
-    Gallery.prototype.ul = $("<ul />", {
-      "class": "bigger-picture-list"
-    });
-
     function Gallery(images) {
       this.trigger_resize = __bind(this.trigger_resize, this);
       this.test_keypress = __bind(this.test_keypress, this);
-      var image, _i, _len;
-      this.container.append(this.overlay, this.ul);
+      this.nav_left = __bind(this.nav_left, this);
+      this.nav_right = __bind(this.nav_right, this);
+      var i, image, _i, _len;
       $("body").addClass("bigger-picture-active").append(this.container);
-      for (_i = 0, _len = images.length; _i < _len; _i++) {
-        image = images[_i];
-        this.set_up_image(image);
+      for (i = _i = 0, _len = images.length; _i < _len; i = ++_i) {
+        image = images[i];
+        this.set_up_image(image, i);
       }
       this.set_up_listeners();
-      this.set_current();
-      window.onresize = this.trigger_resize;
     }
 
     Gallery.prototype.remove = function() {
@@ -40,45 +31,60 @@
       return delete this.slides;
     };
 
-    Gallery.prototype.set_up_image = function(image) {
-      var list_image;
+    Gallery.prototype.set_up_image = function(image, i) {
+      image.index = i;
       if (image.src) {
-        list_image = $("<li >").hide();
-        this.ul.append(list_image);
-        return this.slides.push(new BiggerPicture.Slide(image, list_image));
+        this.slides.push(new BiggerPicture.Slide(image, this.container));
       }
+      return this.set_current(0);
     };
 
-    Gallery.prototype.set_current = function(to) {
-      if (to == null) {
-        to = 0;
+    Gallery.prototype.set_current = function(current_index) {
+      var slide, _i, _len, _ref;
+      this.current_index = current_index;
+      _ref = this.slides;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        slide = _ref[_i];
+        slide.update_position(this.current_index);
       }
-      window.scroll(0, 0);
-      if (this.current_index != null) {
-        this.hide_current();
-      }
-      this.current_index = to;
-      return this.slides[this.current_index].show_slide();
-    };
-
-    Gallery.prototype.hide_current = function() {
-      return this.slides[this.current_index].hide_slide();
+      return window.setTimeout((function() {
+        return window.scrollTo(0, 0);
+      }), 0);
     };
 
     Gallery.prototype.set_up_listeners = function() {
-      return $("body").on("keydown", this.test_keypress);
+      window.onresize = this.trigger_resize;
+      $("body").on("keydown", this.test_keypress);
+      this.container.on("click", ".bigger-picture-right-thumb", this.nav_right);
+      return this.container.on("click", ".bigger-picture-left-thumb", this.nav_left);
+    };
+
+    Gallery.prototype.nav_right = function(evt) {
+      if (evt != null) {
+        evt.preventDefault();
+      }
+      if (this.current_index < this.slides.length - 1) {
+        return this.set_current(this.current_index + 1);
+      }
+    };
+
+    Gallery.prototype.nav_left = function(evt) {
+      if (evt != null) {
+        evt.preventDefault();
+      }
+      if (this.current_index > 0) {
+        return this.set_current(this.current_index - 1);
+      }
     };
 
     Gallery.prototype.test_keypress = function(evt) {
       switch (evt.keyCode) {
         case 39:
         case 40:
-          evt.preventDefault();
-          return this.set_current(this.current_index < this.slides.length - 1 ? this.current_index + 1 : 0);
+          return this.nav_right(evt);
         case 37:
         case 38:
-          evt.preventDefault();
-          return this.set_current(this.current_index > 0 ? this.current_index - 1 : this.slides.length - 1);
+          return this.nav_left(evt);
         case 27:
           evt.preventDefault();
           return this.remove();
@@ -96,36 +102,48 @@
   window.BiggerPicture || (window.BiggerPicture = {});
 
   BiggerPicture.Slide = (function() {
-    function Slide(image, element) {
+    function Slide(image, container) {
       this.image = image;
-      this.element = element;
+      this.container = container;
       this.image_loaded = __bind(this.image_loaded, this);
-      this.list = this.element.parents("ul");
       this.img = new Image();
       this.img.addEventListener("load", this.image_loaded);
+      this.img.style.display = "none";
       this.img.src = this.image.src;
-      this.element.append(this.img);
+      this.container.append(this.img);
     }
 
     Slide.prototype.set_image_size_for_display = function() {
-      var list_height, list_width, scale;
-      list_height = this.list.height();
-      list_width = this.list.width();
-      if (this.raw_image_height > list_height || this.raw_image_width > list_width) {
-        scale = this.raw_image_width > this.raw_image_height ? list_width / this.raw_image_width : list_height / this.raw_image_height;
-      } else {
-        scale = 1;
-      }
+      var container_height, container_width, height_scale, scale, width_scale;
+      container_height = this.container.height() - 75;
+      container_width = this.container.width() * .85;
+      height_scale = this.raw_image_height > container_height ? container_height / this.raw_image_height : 1;
+      width_scale = this.raw_image_width > container_width ? container_width / this.raw_image_width : 1;
+      scale = height_scale < width_scale ? height_scale : width_scale;
       this.img.width = Math.floor(this.raw_image_width * scale);
       return this.img.height = Math.floor(this.raw_image_height * scale);
     };
 
     Slide.prototype.image_loaded = function() {
+      this.img.style.display = "";
       this.raw_image_height = this.img.height;
       this.raw_image_width = this.img.width;
       this.loaded = true;
       if (this.pending_show) {
         return this.show_slide();
+      }
+    };
+
+    Slide.prototype.update_position = function(new_index) {
+      switch (this.image.index) {
+        case new_index:
+          return this.show_slide();
+        case new_index + 1:
+          return this.set_as_right_thumbnail();
+        case new_index - 1:
+          return this.set_as_left_thumbnail();
+        default:
+          return this.hide_slide();
       }
     };
 
@@ -135,12 +153,24 @@
         return;
       }
       this.set_image_size_for_display();
-      this.element.fadeIn("fast");
+      this.img.className = "";
+      this.img.classList.add('bigger-picture-feature');
       return this.pending_show = false;
     };
 
+    Slide.prototype.set_as_right_thumbnail = function() {
+      this.img.className = "";
+      return this.img.classList.add('bigger-picture-thumb', 'bigger-picture-right-thumb');
+    };
+
+    Slide.prototype.set_as_left_thumbnail = function() {
+      this.img.className = "";
+      return this.img.classList.add('bigger-picture-thumb', 'bigger-picture-left-thumb');
+    };
+
     Slide.prototype.hide_slide = function() {
-      return this.element.fadeOut("fast");
+      this.img.className = "";
+      return this.img.classList.add('bigger-picture-hidden');
     };
 
     return Slide;
