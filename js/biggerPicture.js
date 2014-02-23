@@ -129,7 +129,7 @@
 
     Slide.prototype.set_image_size_for_display = function() {
       var container_height, container_width, height_scale, scale, width_scale;
-      container_height = this.container.height() - 75;
+      container_height = this.container.height() * .9;
       container_width = this.container.width() * .85;
       height_scale = this.raw_image_height > container_height ? container_height / this.raw_image_height : 1;
       width_scale = this.raw_image_width > container_width ? container_width / this.raw_image_width : 1;

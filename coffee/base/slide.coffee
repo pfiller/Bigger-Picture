@@ -11,7 +11,7 @@ class BiggerPicture.Slide
     @container.append(@img)
 
   set_image_size_for_display: () ->
-    container_height = @container.height() - 75
+    container_height = @container.height() * .9
     container_width = @container.width() * .85
 
     height_scale = if @raw_image_height > container_height then container_height / @raw_image_height else 1
