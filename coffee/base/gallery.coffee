@@ -30,15 +30,21 @@ class BiggerPicture.Gallery
   set_up_listeners: () ->
     window.onresize = @trigger_resize
     $("body").on("keydown", @test_keypress)
+    @container.on("click", ".bigger-picture-right-thumb", @nav_right)
+    @container.on("click", ".bigger-picture-left-thumb", @nav_left)
+
+  nav_right: (evt) =>
+    evt?.preventDefault()
+    @set_current(@current_index + 1) if @current_index < @slides.length - 1
+
+  nav_left: (evt) =>
+    evt?.preventDefault()
+    @set_current(@current_index + 1) if @current_index < @slides.length - 1
 
   test_keypress: (evt) =>
     switch evt.keyCode
-      when 39, 40
-        evt.preventDefault()
-        @set_current(@current_index + 1) if @current_index < @slides.length - 1
-      when 37, 38
-        evt.preventDefault()
-        @set_current(@current_index - 1) if @current_index > 0
+      when 39, 40 then @nav_right(evt)
+      when 37, 38 then @nav_left(evt)
       when 27
         evt.preventDefault()
         @remove()

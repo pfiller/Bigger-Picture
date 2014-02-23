@@ -14,6 +14,8 @@
     function Gallery(images) {
       this.trigger_resize = __bind(this.trigger_resize, this);
       this.test_keypress = __bind(this.test_keypress, this);
+      this.nav_left = __bind(this.nav_left, this);
+      this.nav_right = __bind(this.nav_right, this);
       var i, image, _i, _len;
       $("body").addClass("bigger-picture-active").append(this.container);
       for (i = _i = 0, _len = images.length; _i < _len; i = ++_i) {
@@ -52,25 +54,37 @@
 
     Gallery.prototype.set_up_listeners = function() {
       window.onresize = this.trigger_resize;
-      return $("body").on("keydown", this.test_keypress);
+      $("body").on("keydown", this.test_keypress);
+      this.container.on("click", ".bigger-picture-right-thumb", this.nav_right);
+      return this.container.on("click", ".bigger-picture-left-thumb", this.nav_left);
+    };
+
+    Gallery.prototype.nav_right = function(evt) {
+      if (evt != null) {
+        evt.preventDefault();
+      }
+      if (this.current_index < this.slides.length - 1) {
+        return this.set_current(this.current_index + 1);
+      }
+    };
+
+    Gallery.prototype.nav_left = function(evt) {
+      if (evt != null) {
+        evt.preventDefault();
+      }
+      if (this.current_index < this.slides.length - 1) {
+        return this.set_current(this.current_index + 1);
+      }
     };
 
     Gallery.prototype.test_keypress = function(evt) {
       switch (evt.keyCode) {
         case 39:
         case 40:
-          evt.preventDefault();
-          if (this.current_index < this.slides.length - 1) {
-            return this.set_current(this.current_index + 1);
-          }
-          break;
+          return this.nav_right(evt);
         case 37:
         case 38:
-          evt.preventDefault();
-          if (this.current_index > 0) {
-            return this.set_current(this.current_index - 1);
-          }
-          break;
+          return this.nav_left(evt);
         case 27:
           evt.preventDefault();
           return this.remove();

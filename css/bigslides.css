@@ -31,6 +31,7 @@
 }
 
 .bigger-picture-right-thumb {
+  cursor: pointer;
   height: auto;
   right: -6%;
   top: 50%;
@@ -40,6 +41,7 @@
 }
 
 .bigger-picture-left-thumb {
+  cursor: pointer;
   height: auto;
   left: -6%;
   top: 50%;
