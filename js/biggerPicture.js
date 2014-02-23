@@ -72,8 +72,8 @@
       if (evt != null) {
         evt.preventDefault();
       }
-      if (this.current_index < this.slides.length - 1) {
-        return this.set_current(this.current_index + 1);
+      if (this.current_index > 0) {
+        return this.set_current(this.current_index - 1);
       }
     };
 
@@ -153,24 +153,24 @@
         return;
       }
       this.set_image_size_for_display();
-      this.img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb', 'bigger-picture-hidden');
+      this.img.classList.remove('bigger-picture-feature', 'bigger-picture-thumb', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb', 'bigger-picture-hidden');
       this.img.classList.add('bigger-picture-feature');
       return this.pending_show = false;
     };
 
     Slide.prototype.set_as_right_thumbnail = function() {
-      this.img.classList.remove('bigger-picture-feature', 'bigger-picture-left-thumb', 'bigger-picture-hidden');
-      return this.img.classList.add('bigger-picture-right-thumb');
+      this.img.classList.add('bigger-picture-thumb', 'bigger-picture-right-thumb');
+      return this.img.classList.remove('bigger-picture-feature', 'bigger-picture-left-thumb', 'bigger-picture-hidden');
     };
 
     Slide.prototype.set_as_left_thumbnail = function() {
-      this.img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-hidden');
-      return this.img.classList.add('bigger-picture-left-thumb');
+      this.img.classList.add('bigger-picture-thumb', 'bigger-picture-left-thumb');
+      return this.img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-hidden');
     };
 
     Slide.prototype.hide_slide = function() {
-      this.img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb');
-      return this.img.classList.add('bigger-picture-hidden');
+      this.img.classList.add('bigger-picture-hidden');
+      return this.img.classList.remove('bigger-picture-feature', 'bigger-picture-thumb', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb');
     };
 
     return Slide;

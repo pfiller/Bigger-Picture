@@ -44,19 +44,19 @@ class BiggerPicture.Slide
 
     @set_image_size_for_display()
 
-    @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
+    @img.classList.remove('bigger-picture-feature', 'bigger-picture-thumb', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
     @img.classList.add('bigger-picture-feature')
 
     @pending_show = false
 
   set_as_right_thumbnail: () ->
+    @img.classList.add('bigger-picture-thumb','bigger-picture-right-thumb')
     @img.classList.remove('bigger-picture-feature', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
-    @img.classList.add('bigger-picture-right-thumb')
 
   set_as_left_thumbnail: () ->
+    @img.classList.add('bigger-picture-thumb','bigger-picture-left-thumb')
     @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-hidden')
-    @img.classList.add('bigger-picture-left-thumb')
 
   hide_slide: () ->
-    @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb')
     @img.classList.add('bigger-picture-hidden')
+    @img.classList.remove('bigger-picture-feature', 'bigger-picture-thumb', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb')
