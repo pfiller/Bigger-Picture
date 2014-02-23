@@ -14,6 +14,6 @@ class inFocus
         caption: container.find(".imgCap").remove("a").text()
       }
 
-    new BiggerPicture.Gallery(images)
+    new BiggerPicture.Gallery(images) if images.length
 
 new inFocus()

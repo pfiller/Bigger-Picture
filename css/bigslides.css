@@ -59,3 +59,12 @@
   width: 100%;
   z-index: 100;
 }
+
+.bigger-clicker {
+  background: blue;
+  height: 20px;
+  left: 20px;
+  position: fixed;
+  top: 20px;
+  width: 20px;
+}

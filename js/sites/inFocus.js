@@ -17,7 +17,9 @@
           caption: container.find(".imgCap").remove("a").text()
         });
       }
-      new BiggerPicture.Gallery(images);
+      if (images.length) {
+        new BiggerPicture.Gallery(images);
+      }
     }
 
     return inFocus;
