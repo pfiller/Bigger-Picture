@@ -37,8 +37,6 @@ class BiggerPicture.Gallery
     $("body").on("keydown", @test_keypress)
 
   test_keypress: (evt) =>
-    evt.preventDefault()
-
     switch evt.keyCode
       when 39, 40
         evt.preventDefault()

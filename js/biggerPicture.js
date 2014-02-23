@@ -93,7 +93,6 @@
     };
 
     Gallery.prototype.test_keypress = function(evt) {
-      evt.preventDefault();
       switch (evt.keyCode) {
         case 39:
         case 40:
