@@ -128,6 +128,7 @@
       this.img.style.display = "";
       this.raw_image_height = this.img.height;
       this.raw_image_width = this.img.width;
+      this.set_image_size_for_display();
       this.loaded = true;
       if (this.pending_show) {
         return this.show_slide();
@@ -152,7 +153,6 @@
         this.pending_show = true;
         return;
       }
-      this.set_image_size_for_display();
       this.img.className = "";
       this.img.classList.add('bigger-picture-feature');
       return this.pending_show = false;

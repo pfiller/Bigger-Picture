@@ -27,6 +27,8 @@ class BiggerPicture.Slide
     @raw_image_height = @img.height
     @raw_image_width = @img.width
 
+    @set_image_size_for_display()
+
     @loaded = true
     @show_slide() if @pending_show
 
@@ -41,8 +43,6 @@ class BiggerPicture.Slide
     if not @loaded
       @pending_show = true
       return
-
-    @set_image_size_for_display()
 
     @img.className = ""
     @img.classList.add('bigger-picture-feature')
