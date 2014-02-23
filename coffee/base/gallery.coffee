@@ -37,14 +37,15 @@ class BiggerPicture.Gallery
     $("body").on("keydown", @test_keypress)
 
   test_keypress: (evt) =>
-    kc = evt.keyCode
+    evt.preventDefault()
 
-    if(kc in [39, 40])
-      evt.preventDefault()
-      @set_current(if @current_index < @slides.length - 1 then @current_index + 1 else 0)
-    else if(kc in [37, 38])
-      evt.preventDefault()
-      @set_current(if @current_index > 0 then @current_index - 1 else @slides.length - 1)
+    switch evt.keyCode
+      when 39, 40
+        evt.preventDefault()
+        @set_current(if @current_index < @slides.length - 1 then @current_index + 1 else 0)
+      when 37, 38
+        evt.preventDefault()
+        @set_current(if @current_index > 0 then @current_index - 1 else @slides.length - 1)
 
   trigger_resize: () =>
     @slides[@current_index].set_image_size_for_display()

@@ -93,14 +93,16 @@
     };
 
     Gallery.prototype.test_keypress = function(evt) {
-      var kc;
-      kc = evt.keyCode;
-      if ((kc === 39 || kc === 40)) {
-        evt.preventDefault();
-        return this.set_current(this.current_index < this.slides.length - 1 ? this.current_index + 1 : 0);
-      } else if ((kc === 37 || kc === 38)) {
-        evt.preventDefault();
-        return this.set_current(this.current_index > 0 ? this.current_index - 1 : this.slides.length - 1);
+      evt.preventDefault();
+      switch (evt.keyCode) {
+        case 39:
+        case 40:
+          evt.preventDefault();
+          return this.set_current(this.current_index < this.slides.length - 1 ? this.current_index + 1 : 0);
+        case 37:
+        case 38:
+          evt.preventDefault();
+          return this.set_current(this.current_index > 0 ? this.current_index - 1 : this.slides.length - 1);
       }
     };
 
