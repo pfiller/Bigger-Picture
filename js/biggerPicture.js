@@ -11,19 +11,10 @@
       "class": "bigger-picture"
     });
 
-    Gallery.prototype.overlay = $("<div />", {
-      "class": "bigger-picture-overlay"
-    });
-
-    Gallery.prototype.ul = $("<ul />", {
-      "class": "bigger-picture-list"
-    });
-
     function Gallery(images) {
       this.trigger_resize = __bind(this.trigger_resize, this);
       this.test_keypress = __bind(this.test_keypress, this);
       var image, _i, _len;
-      this.container.append(this.overlay, this.ul);
       $("body").addClass("bigger-picture-active").append(this.container);
       for (_i = 0, _len = images.length; _i < _len; _i++) {
         image = images[_i];
@@ -42,7 +33,7 @@
 
     Gallery.prototype.set_up_image = function(image) {
       if (image.src) {
-        return this.slides.push(new BiggerPicture.Slide(image, this.ul));
+        return this.slides.push(new BiggerPicture.Slide(image, this.container));
       }
     };
 
@@ -93,27 +84,24 @@
   window.BiggerPicture || (window.BiggerPicture = {});
 
   BiggerPicture.Slide = (function() {
-    function Slide(image, list) {
+    function Slide(image, container) {
       this.image = image;
-      this.list = list;
+      this.container = container;
       this.image_loaded = __bind(this.image_loaded, this);
-      this.element = $("<li >").hide();
       this.img = new Image();
       this.img.addEventListener("load", this.image_loaded);
+      this.img.style.display = 'none';
       this.img.src = this.image.src;
-      this.element.append(this.img);
-      this.list.append(this.element);
+      this.container.append(this.img);
     }
 
     Slide.prototype.set_image_size_for_display = function() {
-      var list_height, list_width, scale;
-      list_height = this.list.height();
-      list_width = this.list.width();
-      if (this.raw_image_height > list_height || this.raw_image_width > list_width) {
-        scale = this.raw_image_width > this.raw_image_height ? list_width / this.raw_image_width : list_height / this.raw_image_height;
-      } else {
-        scale = 1;
-      }
+      var container_height, container_width, height_scale, scale, width_scale;
+      container_height = this.container.height() - 75;
+      container_width = this.container.width() * .85;
+      height_scale = this.raw_image_height > container_height ? container_height / this.raw_image_height : 1;
+      width_scale = this.raw_image_width > container_width ? container_width / this.raw_image_width : 1;
+      scale = height_scale < width_scale ? height_scale : width_scale;
       this.img.width = Math.floor(this.raw_image_width * scale);
       return this.img.height = Math.floor(this.raw_image_height * scale);
     };
@@ -133,12 +121,12 @@
         return;
       }
       this.set_image_size_for_display();
-      this.element.fadeIn("fast");
+      this.img.style.display = 'block';
       return this.pending_show = false;
     };
 
     Slide.prototype.hide_slide = function() {
-      return this.element.fadeOut("fast");
+      return this.img.style.display = 'none';
     };
 
     return Slide;

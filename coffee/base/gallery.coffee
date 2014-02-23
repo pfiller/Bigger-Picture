@@ -6,11 +6,8 @@ class BiggerPicture.Gallery
   slides: []
 
   container: $("<div />", { class: "bigger-picture" })
-  overlay: $("<div />", { class: "bigger-picture-overlay" })
-  ul: $("<ul />", { class: "bigger-picture-list" })
 
   constructor: (images) ->
-    @container.append(@overlay, @ul)
     $("body").addClass("bigger-picture-active").append(@container)
 
     @set_up_image(image) for image in images
@@ -26,8 +23,7 @@ class BiggerPicture.Gallery
     delete @slides
 
   set_up_image: (image) ->
-    if image.src
-      @slides.push new BiggerPicture.Slide(image, @ul)
+    @slides.push new BiggerPicture.Slide(image, @container) if image.src
 
   set_current: (to = 0) ->
     window.scroll(0, 0)
