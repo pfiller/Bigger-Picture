@@ -116,16 +116,25 @@
   window.BiggerPicture || (window.BiggerPicture = {});
 
   BiggerPicture.Slide = (function() {
+    Slide.prototype.container_class = 'bigger-picture-slide';
+
     function Slide(slide, container) {
       this.slide = slide;
       this.container = container;
       this.image_loaded = __bind(this.image_loaded, this);
+      this.slide_container = document.createElement("figure");
+      this.container.append(this.slide_container);
+      this.build_img_tag();
+    }
+
+    Slide.prototype.build_img_tag = function() {
       this.img = new Image();
       this.img.addEventListener("load", this.image_loaded);
       this.img.style.display = "none";
       this.img.src = this.slide.src;
-      this.container.append(this.img);
-    }
+      this.img.style.width = "100%";
+      return this.slide_container.appendChild(this.img);
+    };
 
     Slide.prototype.set_image_size_for_display = function() {
       var container_height, container_width, height_scale, scale, width_scale;
@@ -134,8 +143,8 @@
       height_scale = this.raw_image_height > container_height ? container_height / this.raw_image_height : 1;
       width_scale = this.raw_image_width > container_width ? container_width / this.raw_image_width : 1;
       scale = height_scale < width_scale ? height_scale : width_scale;
-      this.img.width = Math.floor(this.raw_image_width * scale);
-      this.img.height = Math.floor(this.raw_image_height * scale);
+      this.display_width = Math.floor(this.raw_image_width * scale);
+      this.display_height = Math.floor(this.raw_image_height * scale);
       if (this.caption) {
         return this.position_caption();
       }
@@ -166,14 +175,17 @@
     };
 
     Slide.prototype.show_slide = function() {
+      var _ref;
       if (!this.loaded) {
         this.pending_show = true;
         return;
       }
-      this.img.className = "";
-      this.img.classList.add('bigger-picture-feature');
-      if (this.slide.caption) {
-        this.add_caption();
+      this.slide_container.className = "";
+      this.slide_container.classList.add(this.container_class, 'bigger-picture-feature');
+      this.slide_container.style.width = "" + this.display_width + "px";
+      this.slide_container.style.height = "" + this.display_height + "px";
+      if ((_ref = this.caption) != null) {
+        _ref.show();
       }
       return this.pending_show = false;
     };
@@ -182,7 +194,7 @@
       this.caption = document.createElement("div");
       this.caption.className = "bigger-picture-caption";
       this.caption.innerHTML = this.slide.caption;
-      this.container.append(this.caption);
+      this.slide_container.appendChild(this.caption);
       return this.position_caption();
     };
 
@@ -195,23 +207,27 @@
 
     Slide.prototype.set_as_right_thumbnail = function() {
       var _ref;
-      this.img.className = "";
-      this.img.classList.add('bigger-picture-thumb', 'bigger-picture-right-thumb');
-      return (_ref = this.caption) != null ? _ref.remove() : void 0;
+      this.slide_container.style.width = "";
+      this.slide_container.style.height = "";
+      this.slide_container.className = "";
+      this.slide_container.classList.add(this.container_class, 'bigger-picture-thumb', 'bigger-picture-right-thumb');
+      return (_ref = this.caption) != null ? _ref.hide() : void 0;
     };
 
     Slide.prototype.set_as_left_thumbnail = function() {
       var _ref;
-      this.img.className = "";
-      this.img.classList.add('bigger-picture-thumb', 'bigger-picture-left-thumb');
-      return (_ref = this.caption) != null ? _ref.remove() : void 0;
+      this.slide_container.style.width = "";
+      this.slide_container.style.height = "";
+      this.slide_container.className = "";
+      this.slide_container.classList.add(this.container_class, 'bigger-picture-thumb', 'bigger-picture-left-thumb');
+      return (_ref = this.caption) != null ? _ref.hide() : void 0;
     };
 
     Slide.prototype.hide_slide = function() {
-      var _ref;
-      this.img.className = "";
-      this.img.classList.add('bigger-picture-hidden');
-      return (_ref = this.caption) != null ? _ref.remove() : void 0;
+      this.slide_container.style.width = "";
+      this.slide_container.style.height = "";
+      this.slide_container.className = "";
+      return this.slide_container.classList.add('bigger-picture-hidden');
     };
 
     return Slide;

@@ -2,13 +2,24 @@ window.BiggerPicture or= {}
 
 class BiggerPicture.Slide
 
+  container_class: 'bigger-picture-slide'
+
   constructor: (@slide, @container) ->
+    @slide_container = document.createElement("figure")
+    @container.append(@slide_container)
+
+    @build_img_tag()
+
+  build_img_tag: () ->
     @img = new Image()
     @img.addEventListener "load", @image_loaded
     @img.style.display = "none"
     @img.src = @slide.src
 
-    @container.append(@img)
+
+    @img.style.width = "100%"
+
+    @slide_container.appendChild(@img)
 
   set_image_size_for_display: () ->
     container_height = @container.height() * .9
@@ -19,8 +30,8 @@ class BiggerPicture.Slide
 
     scale = if height_scale < width_scale then height_scale else width_scale
 
-    @img.width = Math.floor(@raw_image_width * scale)
-    @img.height = Math.floor(@raw_image_height * scale)
+    @display_width = Math.floor(@raw_image_width * scale)
+    @display_height = Math.floor(@raw_image_height * scale)
 
     @position_caption() if @caption
 
@@ -46,10 +57,12 @@ class BiggerPicture.Slide
       @pending_show = true
       return
 
-    @img.className = ""
-    @img.classList.add('bigger-picture-feature')
+    @slide_container.className = ""
+    @slide_container.classList.add(@container_class, 'bigger-picture-feature')
+    @slide_container.style.width = "#{@display_width}px"
+    @slide_container.style.height = "#{@display_height}px"
 
-    @add_caption() if @slide.caption
+    @caption?.show()
 
     @pending_show = false
 
@@ -58,7 +71,7 @@ class BiggerPicture.Slide
     @caption = document.createElement("div")
     @caption.className = "bigger-picture-caption"
     @caption.innerHTML = @slide.caption
-    @container.append(@caption)
+    @slide_container.appendChild(@caption)
     @position_caption()
 
   position_caption: () ->
@@ -67,16 +80,21 @@ class BiggerPicture.Slide
     @caption.style.top = "#{image_bound.bottom-@caption.getBoundingClientRect().height}px"
 
   set_as_right_thumbnail: () ->
-    @img.className = ""
-    @img.classList.add('bigger-picture-thumb','bigger-picture-right-thumb')
-    @caption?.remove()
+    @slide_container.style.width = ""
+    @slide_container.style.height = ""
+    @slide_container.className = ""
+    @slide_container.classList.add(@container_class, 'bigger-picture-thumb','bigger-picture-right-thumb')
+    @caption?.hide()
 
   set_as_left_thumbnail: () ->
-    @img.className = ""
-    @img.classList.add('bigger-picture-thumb','bigger-picture-left-thumb')
-    @caption?.remove()
+    @slide_container.style.width = ""
+    @slide_container.style.height = ""
+    @slide_container.className = ""
+    @slide_container.classList.add(@container_class, 'bigger-picture-thumb','bigger-picture-left-thumb')
+    @caption?.hide()
 
   hide_slide: () ->
-    @img.className = ""
-    @img.classList.add('bigger-picture-hidden')
-    @caption?.remove()
+    @slide_container.style.width = ""
+    @slide_container.style.height = ""
+    @slide_container.className = ""
+    @slide_container.classList.add('bigger-picture-hidden')
