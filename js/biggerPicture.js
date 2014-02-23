@@ -116,14 +116,14 @@
   window.BiggerPicture || (window.BiggerPicture = {});
 
   BiggerPicture.Slide = (function() {
-    function Slide(image, container) {
-      this.image = image;
+    function Slide(slide, container) {
+      this.slide = slide;
       this.container = container;
       this.image_loaded = __bind(this.image_loaded, this);
       this.img = new Image();
       this.img.addEventListener("load", this.image_loaded);
       this.img.style.display = "none";
-      this.img.src = this.image.src;
+      this.img.src = this.slide.src;
       this.container.append(this.img);
     }
 
@@ -153,7 +153,7 @@
     };
 
     Slide.prototype.update_position = function(new_index) {
-      switch (this.image.index) {
+      switch (this.slide.index) {
         case new_index:
           return this.show_slide();
         case new_index + 1:
@@ -172,7 +172,7 @@
       }
       this.img.className = "";
       this.img.classList.add('bigger-picture-feature');
-      if (this.img.caption) {
+      if (this.slide.caption) {
         this.add_caption();
       }
       return this.pending_show = false;
@@ -181,7 +181,7 @@
     Slide.prototype.add_caption = function() {
       this.caption = document.createElement("div");
       this.caption.className = "bigger-picture-caption";
-      this.caption.innerHTML = this.image.caption;
+      this.caption.innerHTML = this.slide.caption;
       this.container.append(this.caption);
       return this.position_caption();
     };

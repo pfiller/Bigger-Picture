@@ -2,11 +2,11 @@ window.BiggerPicture or= {}
 
 class BiggerPicture.Slide
 
-  constructor: (@image, @container) ->
+  constructor: (@slide, @container) ->
     @img = new Image()
     @img.addEventListener "load", @image_loaded
     @img.style.display = "none"
-    @img.src = @image.src
+    @img.src = @slide.src
 
     @container.append(@img)
 
@@ -35,7 +35,7 @@ class BiggerPicture.Slide
     @show_slide() if @pending_show
 
   update_position: (new_index) ->
-    switch @image.index
+    switch @slide.index
       when new_index then @show_slide()
       when new_index + 1 then @set_as_right_thumbnail()
       when new_index - 1 then @set_as_left_thumbnail()
@@ -49,7 +49,7 @@ class BiggerPicture.Slide
     @img.className = ""
     @img.classList.add('bigger-picture-feature')
 
-    @add_caption() if @img.caption
+    @add_caption() if @slide.caption
 
     @pending_show = false
 
@@ -57,7 +57,7 @@ class BiggerPicture.Slide
   add_caption: () ->
     @caption = document.createElement("div")
     @caption.className = "bigger-picture-caption"
-    @caption.innerHTML = @image.caption
+    @caption.innerHTML = @slide.caption
     @container.append(@caption)
     @position_caption()
 
