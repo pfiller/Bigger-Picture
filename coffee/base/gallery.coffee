@@ -19,6 +19,10 @@ class BiggerPicture.Gallery
 
     window.onresize = @trigger_resize
 
+  remove: () ->
+    @container.remove()
+    delete @slides
+
   set_up_image: (image) ->
     list_image = $("<li >").hide()
     @ul.append(list_image)
@@ -44,6 +48,9 @@ class BiggerPicture.Gallery
       when 37, 38
         evt.preventDefault()
         @set_current(if @current_index > 0 then @current_index - 1 else @slides.length - 1)
+      when 27
+        evt.preventDefault()
+        @remove()
 
   trigger_resize: () =>
     @slides[@current_index].set_image_size_for_display()

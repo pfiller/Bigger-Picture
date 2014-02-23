@@ -65,6 +65,11 @@
       window.onresize = this.trigger_resize;
     }
 
+    Gallery.prototype.remove = function() {
+      this.container.remove();
+      return delete this.slides;
+    };
+
     Gallery.prototype.set_up_image = function(image) {
       var list_image;
       list_image = $("<li >").hide();
@@ -102,6 +107,9 @@
         case 38:
           evt.preventDefault();
           return this.set_current(this.current_index > 0 ? this.current_index - 1 : this.slides.length - 1);
+        case 27:
+          evt.preventDefault();
+          return this.remove();
       }
     };
 
