@@ -19,6 +19,7 @@
       this.test_keypress = __bind(this.test_keypress, this);
       this.nav_left = __bind(this.nav_left, this);
       this.nav_right = __bind(this.nav_right, this);
+      this.remove = __bind(this.remove, this);
       this.handle_clicker_click = __bind(this.handle_clicker_click, this);
       clicker = document.createElement("div");
       clicker.className = "bigger-clicker";
@@ -27,7 +28,7 @@
     }
 
     Gallery.prototype.handle_clicker_click = function() {
-      var i, image, _i, _len, _ref;
+      var clicker, i, image, _i, _len, _ref;
       document.documentElement.webkitRequestFullScreen();
       $("body").addClass("bigger-picture-active").append(this.container);
       _ref = this.images;
@@ -35,7 +36,12 @@
         image = _ref[i];
         this.set_up_image(image, i);
       }
-      return this.set_up_listeners();
+      this.set_up_listeners();
+      clicker = document.createElement("div");
+      clicker.className = "bigger-closer";
+      clicker.innerHTML = "x";
+      this.container.append(clicker);
+      return clicker.addEventListener("click", this.remove);
     };
 
     Gallery.prototype.remove = function() {

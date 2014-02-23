@@ -21,7 +21,13 @@ class BiggerPicture.Gallery
     @set_up_image(image, i) for image, i in @images
     @set_up_listeners()
 
-  remove: () ->
+    clicker = document.createElement("div")
+    clicker.className = "bigger-closer"
+    clicker.innerHTML = "x"
+    @container.append(clicker)
+    clicker.addEventListener("click", @remove)
+
+  remove: () =>
     $("body").removeClass("bigger-picture-active")
     @container.remove()
     delete @slides
