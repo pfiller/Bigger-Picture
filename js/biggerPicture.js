@@ -8,7 +8,7 @@
   BiggerPicture.App = (function() {
     function App() {
       var container, containers, image_el, images, _i, _len;
-      containers = $(".bpImageTop, .bpBoth");
+      containers = $(".bpBody, .bpImageTop, .bpBoth, .t402-elided-image.bpImage");
       images = [];
       for (_i = 0, _len = containers.length; _i < _len; _i++) {
         container = containers[_i];
@@ -73,9 +73,11 @@
 
     Gallery.prototype.set_up_image = function(image) {
       var list_image;
-      list_image = $("<li >").hide();
-      this.ul.append(list_image);
-      return this.slides.push(new BiggerPicture.Slide(image, list_image));
+      if (image.src) {
+        list_image = $("<li >").hide();
+        this.ul.append(list_image);
+        return this.slides.push(new BiggerPicture.Slide(image, list_image));
+      }
     };
 
     Gallery.prototype.set_current = function(to) {

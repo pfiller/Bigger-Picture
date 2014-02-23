@@ -3,7 +3,7 @@ BiggerPicture = BiggerPicture or {}
 class BiggerPicture.App
 
   constructor: () ->
-    containers = $(".bpImageTop, .bpBoth")
+    containers = $(".bpBody, .bpImageTop, .bpBoth, .t402-elided-image.bpImage")
     images = []
 
     for container in containers
