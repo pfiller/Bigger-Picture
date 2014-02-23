@@ -106,6 +106,7 @@
 
     Gallery.prototype.trigger_resize = function() {
       this.slides[this.current_index].set_image_size_for_display();
+      this.slides[this.current_index].show_slide();
       clearTimeout(this.resize_timeout);
       return this.resize_timeout = setTimeout(this.resize_all_images, 100);
     };
