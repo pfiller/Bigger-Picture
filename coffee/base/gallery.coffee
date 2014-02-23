@@ -7,10 +7,16 @@ class BiggerPicture.Gallery
 
   container: $("<div />", { class: "bigger-picture" })
 
-  constructor: (images) ->
+  constructor: (@images) ->
+    clicker = document.createElement("div")
+    clicker.className = "bigger-clicker"
+    document.querySelector("body").appendChild(clicker)
+    clicker.addEventListener("click", @handle_clicker_click)
+
+  handle_clicker_click: () =>
     $("body").addClass("bigger-picture-active").append(@container)
 
-    @set_up_image(image, i) for image, i in images
+    @set_up_image(image, i) for image, i in @images
     @set_up_listeners()
 
   remove: () ->

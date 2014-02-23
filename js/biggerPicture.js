@@ -12,19 +12,30 @@
     });
 
     function Gallery(images) {
+      var clicker;
+      this.images = images;
       this.resize_all_images = __bind(this.resize_all_images, this);
       this.trigger_resize = __bind(this.trigger_resize, this);
       this.test_keypress = __bind(this.test_keypress, this);
       this.nav_left = __bind(this.nav_left, this);
       this.nav_right = __bind(this.nav_right, this);
-      var i, image, _i, _len;
+      this.handle_clicker_click = __bind(this.handle_clicker_click, this);
+      clicker = document.createElement("div");
+      clicker.className = "bigger-clicker";
+      document.querySelector("body").appendChild(clicker);
+      clicker.addEventListener("click", this.handle_clicker_click);
+    }
+
+    Gallery.prototype.handle_clicker_click = function() {
+      var i, image, _i, _len, _ref;
       $("body").addClass("bigger-picture-active").append(this.container);
-      for (i = _i = 0, _len = images.length; _i < _len; i = ++_i) {
-        image = images[i];
+      _ref = this.images;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        image = _ref[i];
         this.set_up_image(image, i);
       }
-      this.set_up_listeners();
-    }
+      return this.set_up_listeners();
+    };
 
     Gallery.prototype.remove = function() {
       $("body").removeClass("bigger-picture-active");
