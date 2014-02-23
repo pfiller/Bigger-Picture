@@ -144,10 +144,7 @@
       width_scale = this.raw_image_width > container_width ? container_width / this.raw_image_width : 1;
       scale = height_scale < width_scale ? height_scale : width_scale;
       this.display_width = Math.floor(this.raw_image_width * scale);
-      this.display_height = Math.floor(this.raw_image_height * scale);
-      if (this.caption) {
-        return this.position_caption();
-      }
+      return this.display_height = Math.floor(this.raw_image_height * scale);
     };
 
     Slide.prototype.image_loaded = function() {
@@ -155,6 +152,9 @@
       this.raw_image_height = this.img.height;
       this.raw_image_width = this.img.width;
       this.set_image_size_for_display();
+      if (this.slide.caption) {
+        this.add_caption();
+      }
       this.loaded = true;
       if (this.pending_show) {
         return this.show_slide();
@@ -185,24 +185,18 @@
       this.slide_container.style.width = "" + this.display_width + "px";
       this.slide_container.style.height = "" + this.display_height + "px";
       if ((_ref = this.caption) != null) {
-        _ref.show();
+        _ref.style.display = '';
       }
       return this.pending_show = false;
     };
 
     Slide.prototype.add_caption = function() {
-      this.caption = document.createElement("div");
+      var _ref;
+      this.caption = document.createElement("figcaption");
       this.caption.className = "bigger-picture-caption";
       this.caption.innerHTML = this.slide.caption;
       this.slide_container.appendChild(this.caption);
-      return this.position_caption();
-    };
-
-    Slide.prototype.position_caption = function() {
-      var image_bound;
-      image_bound = this.img.getBoundingClientRect();
-      this.caption.style.maxWidth = "" + (Math.round(image_bound.width)) + "px";
-      return this.caption.style.top = "" + (image_bound.bottom - this.caption.getBoundingClientRect().height) + "px";
+      return (_ref = this.caption) != null ? _ref.style.display = 'none' : void 0;
     };
 
     Slide.prototype.set_as_right_thumbnail = function() {
@@ -211,7 +205,7 @@
       this.slide_container.style.height = "";
       this.slide_container.className = "";
       this.slide_container.classList.add(this.container_class, 'bigger-picture-thumb', 'bigger-picture-right-thumb');
-      return (_ref = this.caption) != null ? _ref.hide() : void 0;
+      return (_ref = this.caption) != null ? _ref.style.display = 'none' : void 0;
     };
 
     Slide.prototype.set_as_left_thumbnail = function() {
@@ -220,7 +214,7 @@
       this.slide_container.style.height = "";
       this.slide_container.className = "";
       this.slide_container.classList.add(this.container_class, 'bigger-picture-thumb', 'bigger-picture-left-thumb');
-      return (_ref = this.caption) != null ? _ref.hide() : void 0;
+      return (_ref = this.caption) != null ? _ref.style.display = 'none' : void 0;
     };
 
     Slide.prototype.hide_slide = function() {
