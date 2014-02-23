@@ -38,8 +38,6 @@
   BiggerPicture.Gallery = (function() {
     Gallery.prototype.slides = [];
 
-    Gallery.prototype.current_index = 0;
-
     Gallery.prototype.container = $("<div />", {
       "class": "bigger-picture"
     });
@@ -54,6 +52,7 @@
 
     function Gallery(images) {
       this.trigger_resize = __bind(this.trigger_resize, this);
+      this.test_keypress = __bind(this.test_keypress, this);
       var image, _i, _len;
       this.container.append(this.overlay, this.ul);
       $("body").append(this.container);
@@ -62,7 +61,7 @@
         this.set_up_image(image);
       }
       this.set_up_listeners();
-      this.show_current();
+      this.set_current();
       window.onresize = this.trigger_resize;
     }
 
@@ -73,7 +72,15 @@
       return this.slides.push(new BiggerPicture.Slide(image, list_image));
     };
 
-    Gallery.prototype.show_current = function() {
+    Gallery.prototype.set_current = function(to) {
+      if (to == null) {
+        to = 0;
+      }
+      window.scroll(0, 0);
+      if (this.current_index != null) {
+        this.hide_current();
+      }
+      this.current_index = to;
       return this.slides[this.current_index].show_slide();
     };
 
@@ -82,26 +89,18 @@
     };
 
     Gallery.prototype.set_up_listeners = function() {
-      var _this = this;
-      return $("body").on("keydown", function(evt) {
-        return _this.test_keypress(evt);
-      });
+      return $("body").on("keydown", this.test_keypress);
     };
 
     Gallery.prototype.test_keypress = function(evt) {
-      var kc, to;
+      var kc;
       kc = evt.keyCode;
-      to = -9999;
       if ((kc === 39 || kc === 40)) {
-        to = this.current_index < this.slides.length - 1 ? this.current_index + 1 : 0;
-      } else if ((kc === 37 || kc === 38)) {
-        to = this.current_index > 0 ? this.current_index - 1 : this.slides.length - 1;
-      }
-      if (to >= 0) {
         evt.preventDefault();
-        this.hide_current();
-        this.current_index = to;
-        return this.show_current();
+        return this.set_current(this.current_index < this.slides.length - 1 ? this.current_index + 1 : 0);
+      } else if ((kc === 37 || kc === 38)) {
+        evt.preventDefault();
+        return this.set_current(this.current_index > 0 ? this.current_index - 1 : this.slides.length - 1);
       }
     };
 
