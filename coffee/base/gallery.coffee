@@ -14,6 +14,8 @@ class BiggerPicture.Gallery
     clicker.addEventListener("click", @handle_clicker_click)
 
   handle_clicker_click: () =>
+    document.documentElement.webkitRequestFullScreen()
+
     $("body").addClass("bigger-picture-active").append(@container)
 
     @set_up_image(image, i) for image, i in @images

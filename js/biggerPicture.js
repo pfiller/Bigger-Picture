@@ -28,6 +28,7 @@
 
     Gallery.prototype.handle_clicker_click = function() {
       var i, image, _i, _len, _ref;
+      document.documentElement.webkitRequestFullScreen();
       $("body").addClass("bigger-picture-active").append(this.container);
       _ref = this.images;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
