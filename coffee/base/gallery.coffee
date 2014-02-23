@@ -11,11 +11,7 @@ class BiggerPicture.Gallery
     $("body").addClass("bigger-picture-active").append(@container)
 
     @set_up_image(image, i) for image, i in images
-
     @set_up_listeners()
-    @set_current(0)
-
-    window.onresize = @trigger_resize
 
   remove: () ->
     $("body").removeClass("bigger-picture-active")
@@ -25,12 +21,14 @@ class BiggerPicture.Gallery
   set_up_image: (image, i) ->
     image.index = i
     @slides.push new BiggerPicture.Slide(image, @container) if image.src
+    @set_current(0)
 
   set_current: (@current_index) ->
     slide.update_position(@current_index) for slide in @slides
     window.setTimeout (() -> window.scrollTo(0, 0)), 0
 
   set_up_listeners: () ->
+    window.onresize = @trigger_resize
     $("body").on("keydown", @test_keypress)
 
   test_keypress: (evt) =>

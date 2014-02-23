@@ -21,8 +21,6 @@
         this.set_up_image(image, i);
       }
       this.set_up_listeners();
-      this.set_current(0);
-      window.onresize = this.trigger_resize;
     }
 
     Gallery.prototype.remove = function() {
@@ -34,8 +32,9 @@
     Gallery.prototype.set_up_image = function(image, i) {
       image.index = i;
       if (image.src) {
-        return this.slides.push(new BiggerPicture.Slide(image, this.container));
+        this.slides.push(new BiggerPicture.Slide(image, this.container));
       }
+      return this.set_current(0);
     };
 
     Gallery.prototype.set_current = function(current_index) {
@@ -52,6 +51,7 @@
     };
 
     Gallery.prototype.set_up_listeners = function() {
+      window.onresize = this.trigger_resize;
       return $("body").on("keydown", this.test_keypress);
     };
 
