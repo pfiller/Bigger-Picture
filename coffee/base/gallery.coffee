@@ -1,4 +1,5 @@
-BiggerPicture = BiggerPicture or {}
+
+window.BiggerPicture or= {}
 
 class BiggerPicture.Gallery
 

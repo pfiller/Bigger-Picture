@@ -1,6 +1,4 @@
-BiggerPicture = BiggerPicture or {}
-
-class BiggerPicture.App
+class BigPicture
 
   constructor: () ->
     containers = $(".bpBody, .bpImageTop, .bpBoth, .t402-elided-image.bpImage")
@@ -19,5 +17,5 @@ class BiggerPicture.App
     new BiggerPicture.Gallery(images)
 
 setTimeout () ->
-    new BiggerPicture.App()
+    new BigPicture()
   0
