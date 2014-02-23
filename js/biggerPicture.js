@@ -12,6 +12,7 @@
     });
 
     function Gallery(images) {
+      this.resize_all_images = __bind(this.resize_all_images, this);
       this.trigger_resize = __bind(this.trigger_resize, this);
       this.test_keypress = __bind(this.test_keypress, this);
       this.nav_left = __bind(this.nav_left, this);
@@ -92,7 +93,20 @@
     };
 
     Gallery.prototype.trigger_resize = function() {
-      return this.slides[this.current_index].set_image_size_for_display();
+      this.slides[this.current_index].set_image_size_for_display();
+      clearTimeout(this.resize_timeout);
+      return this.resize_timeout = setTimeout(this.resize_all_images, 100);
+    };
+
+    Gallery.prototype.resize_all_images = function() {
+      var slide, _i, _len, _ref, _results;
+      _ref = this.slides;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        slide = _ref[_i];
+        _results.push(slide.set_image_size_for_display());
+      }
+      return _results;
     };
 
     return Gallery;

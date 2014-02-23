@@ -51,3 +51,9 @@ class BiggerPicture.Gallery
 
   trigger_resize: () =>
     @slides[@current_index].set_image_size_for_display()
+
+    clearTimeout(@resize_timeout)
+    @resize_timeout = setTimeout(@resize_all_images, 100)
+
+  resize_all_images: () =>
+    slide.set_image_size_for_display() for slide in @slides
