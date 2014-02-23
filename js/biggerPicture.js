@@ -149,28 +149,43 @@
     };
 
     Slide.prototype.show_slide = function() {
+      var caption_bound, image_bound;
       if (!this.loaded) {
         this.pending_show = true;
         return;
       }
       this.img.className = "";
       this.img.classList.add('bigger-picture-feature');
+      this.caption = document.createElement("div");
+      this.caption.className = "bigger-picture-caption";
+      this.caption.innerHTML = this.image.caption;
+      image_bound = this.img.getBoundingClientRect();
+      this.caption.style.maxWidth = "" + (Math.round(image_bound.width)) + "px";
+      this.container.append(this.caption);
+      caption_bound = this.caption.getBoundingClientRect();
+      this.caption.style.top = "" + (image_bound.bottom - caption_bound.height) + "px";
       return this.pending_show = false;
     };
 
     Slide.prototype.set_as_right_thumbnail = function() {
+      var _ref;
       this.img.className = "";
-      return this.img.classList.add('bigger-picture-thumb', 'bigger-picture-right-thumb');
+      this.img.classList.add('bigger-picture-thumb', 'bigger-picture-right-thumb');
+      return (_ref = this.caption) != null ? _ref.remove() : void 0;
     };
 
     Slide.prototype.set_as_left_thumbnail = function() {
+      var _ref;
       this.img.className = "";
-      return this.img.classList.add('bigger-picture-thumb', 'bigger-picture-left-thumb');
+      this.img.classList.add('bigger-picture-thumb', 'bigger-picture-left-thumb');
+      return (_ref = this.caption) != null ? _ref.remove() : void 0;
     };
 
     Slide.prototype.hide_slide = function() {
+      var _ref;
       this.img.className = "";
-      return this.img.classList.add('bigger-picture-hidden');
+      this.img.classList.add('bigger-picture-hidden');
+      return (_ref = this.caption) != null ? _ref.remove() : void 0;
     };
 
     return Slide;

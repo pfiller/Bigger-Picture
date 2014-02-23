@@ -47,16 +47,30 @@ class BiggerPicture.Slide
     @img.className = ""
     @img.classList.add('bigger-picture-feature')
 
+    @caption = document.createElement("div")
+    @caption.className = "bigger-picture-caption"
+    @caption.innerHTML = @image.caption
+    image_bound = @img.getBoundingClientRect()
+    @caption.style.maxWidth = "#{Math.round(image_bound.width)}px"
+    @container.append(@caption)
+
+    caption_bound = @caption.getBoundingClientRect()
+    @caption.style.top = "#{image_bound.bottom-caption_bound.height}px"
+
+
     @pending_show = false
 
   set_as_right_thumbnail: () ->
     @img.className = ""
     @img.classList.add('bigger-picture-thumb','bigger-picture-right-thumb')
+    @caption?.remove()
 
   set_as_left_thumbnail: () ->
     @img.className = ""
     @img.classList.add('bigger-picture-thumb','bigger-picture-left-thumb')
+    @caption?.remove()
 
   hide_slide: () ->
     @img.className = ""
     @img.classList.add('bigger-picture-hidden')
+    @caption?.remove()
