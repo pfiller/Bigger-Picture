@@ -44,19 +44,19 @@ class BiggerPicture.Slide
 
     @set_image_size_for_display()
 
-    @img.classList.remove('bigger-picture-feature', 'bigger-picture-thumb', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
+    @img.className = ""
     @img.classList.add('bigger-picture-feature')
 
     @pending_show = false
 
   set_as_right_thumbnail: () ->
+    @img.className = ""
     @img.classList.add('bigger-picture-thumb','bigger-picture-right-thumb')
-    @img.classList.remove('bigger-picture-feature', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
 
   set_as_left_thumbnail: () ->
+    @img.className = ""
     @img.classList.add('bigger-picture-thumb','bigger-picture-left-thumb')
-    @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-hidden')
 
   hide_slide: () ->
+    @img.className = ""
     @img.classList.add('bigger-picture-hidden')
-    @img.classList.remove('bigger-picture-feature', 'bigger-picture-thumb', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb')
