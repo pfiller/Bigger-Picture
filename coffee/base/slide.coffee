@@ -2,14 +2,15 @@ window.BiggerPicture or= {}
 
 class BiggerPicture.Slide
 
-  constructor: (@image, @element) ->
-    @list = @element.parents("ul")
+  constructor: (@image, @list) ->
+    @element = $("<li >").hide()
 
     @img = new Image()
     @img.addEventListener "load", @image_loaded
     @img.src = @image.src
 
     @element.append(@img)
+    @list.append(@element)
 
   set_image_size_for_display: () ->
     list_height = @list.height()

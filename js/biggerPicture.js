@@ -41,11 +41,8 @@
     };
 
     Gallery.prototype.set_up_image = function(image) {
-      var list_image;
       if (image.src) {
-        list_image = $("<li >").hide();
-        this.ul.append(list_image);
-        return this.slides.push(new BiggerPicture.Slide(image, list_image));
+        return this.slides.push(new BiggerPicture.Slide(image, this.ul));
       }
     };
 
@@ -96,15 +93,16 @@
   window.BiggerPicture || (window.BiggerPicture = {});
 
   BiggerPicture.Slide = (function() {
-    function Slide(image, element) {
+    function Slide(image, list) {
       this.image = image;
-      this.element = element;
+      this.list = list;
       this.image_loaded = __bind(this.image_loaded, this);
-      this.list = this.element.parents("ul");
+      this.element = $("<li >").hide();
       this.img = new Image();
       this.img.addEventListener("load", this.image_loaded);
       this.img.src = this.image.src;
       this.element.append(this.img);
+      this.list.append(this.element);
     }
 
     Slide.prototype.set_image_size_for_display = function() {

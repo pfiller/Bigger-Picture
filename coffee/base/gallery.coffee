@@ -27,9 +27,7 @@ class BiggerPicture.Gallery
 
   set_up_image: (image) ->
     if image.src
-      list_image = $("<li >").hide()
-      @ul.append(list_image)
-      @slides.push new BiggerPicture.Slide(image, list_image)
+      @slides.push new BiggerPicture.Slide(image, @ul)
 
   set_current: (to = 0) ->
     window.scroll(0, 0)
