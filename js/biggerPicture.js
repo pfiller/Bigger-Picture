@@ -135,7 +135,10 @@
       width_scale = this.raw_image_width > container_width ? container_width / this.raw_image_width : 1;
       scale = height_scale < width_scale ? height_scale : width_scale;
       this.img.width = Math.floor(this.raw_image_width * scale);
-      return this.img.height = Math.floor(this.raw_image_height * scale);
+      this.img.height = Math.floor(this.raw_image_height * scale);
+      if (this.caption) {
+        return this.position_caption();
+      }
     };
 
     Slide.prototype.image_loaded = function() {
@@ -163,22 +166,31 @@
     };
 
     Slide.prototype.show_slide = function() {
-      var caption_bound, image_bound;
       if (!this.loaded) {
         this.pending_show = true;
         return;
       }
       this.img.className = "";
       this.img.classList.add('bigger-picture-feature');
+      if (this.img.caption) {
+        this.add_caption();
+      }
+      return this.pending_show = false;
+    };
+
+    Slide.prototype.add_caption = function() {
       this.caption = document.createElement("div");
       this.caption.className = "bigger-picture-caption";
       this.caption.innerHTML = this.image.caption;
+      this.container.append(this.caption);
+      return this.position_caption();
+    };
+
+    Slide.prototype.position_caption = function() {
+      var image_bound;
       image_bound = this.img.getBoundingClientRect();
       this.caption.style.maxWidth = "" + (Math.round(image_bound.width)) + "px";
-      this.container.append(this.caption);
-      caption_bound = this.caption.getBoundingClientRect();
-      this.caption.style.top = "" + (image_bound.bottom - caption_bound.height) + "px";
-      return this.pending_show = false;
+      return this.caption.style.top = "" + (image_bound.bottom - this.caption.getBoundingClientRect().height) + "px";
     };
 
     Slide.prototype.set_as_right_thumbnail = function() {

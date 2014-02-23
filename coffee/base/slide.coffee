@@ -22,6 +22,8 @@ class BiggerPicture.Slide
     @img.width = Math.floor(@raw_image_width * scale)
     @img.height = Math.floor(@raw_image_height * scale)
 
+    @position_caption() if @caption
+
   image_loaded: =>
     @img.style.display = ""
     @raw_image_height = @img.height
@@ -47,18 +49,22 @@ class BiggerPicture.Slide
     @img.className = ""
     @img.classList.add('bigger-picture-feature')
 
+    @add_caption() if @img.caption
+
+    @pending_show = false
+
+
+  add_caption: () ->
     @caption = document.createElement("div")
     @caption.className = "bigger-picture-caption"
     @caption.innerHTML = @image.caption
+    @container.append(@caption)
+    @position_caption()
+
+  position_caption: () ->
     image_bound = @img.getBoundingClientRect()
     @caption.style.maxWidth = "#{Math.round(image_bound.width)}px"
-    @container.append(@caption)
-
-    caption_bound = @caption.getBoundingClientRect()
-    @caption.style.top = "#{image_bound.bottom-caption_bound.height}px"
-
-
-    @pending_show = false
+    @caption.style.top = "#{image_bound.bottom-@caption.getBoundingClientRect().height}px"
 
   set_as_right_thumbnail: () ->
     @img.className = ""
