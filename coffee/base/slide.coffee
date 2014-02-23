@@ -5,7 +5,7 @@ class BiggerPicture.Slide
   constructor: (@image, @container) ->
     @img = new Image()
     @img.addEventListener "load", @image_loaded
-    @img.style.display = 'none'
+    @img.style.display = "none"
     @img.src = @image.src
 
     @container.append(@img)
@@ -23,11 +23,19 @@ class BiggerPicture.Slide
     @img.height = Math.floor(@raw_image_height * scale)
 
   image_loaded: =>
+    @img.style.display = ""
     @raw_image_height = @img.height
     @raw_image_width = @img.width
 
     @loaded = true
     @show_slide() if @pending_show
+
+  update_position: (new_index) ->
+    switch @image.index
+      when new_index then @show_slide()
+      when new_index + 1 then @set_as_right_thumbnail()
+      when new_index - 1 then @set_as_left_thumbnail()
+      else @hide_slide()
 
   show_slide: () ->
     if not @loaded
@@ -35,8 +43,20 @@ class BiggerPicture.Slide
       return
 
     @set_image_size_for_display()
-    @img.style.display = 'block'
+
+    @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
+    @img.classList.add('bigger-picture-feature')
+
     @pending_show = false
 
+  set_as_right_thumbnail: () ->
+    @img.classList.remove('bigger-picture-feature', 'bigger-picture-left-thumb', 'bigger-picture-hidden')
+    @img.classList.add('bigger-picture-right-thumb')
+
+  set_as_left_thumbnail: () ->
+    @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-hidden')
+    @img.classList.add('bigger-picture-left-thumb')
+
   hide_slide: () ->
-    @img.style.display = 'none'
+    @img.classList.remove('bigger-picture-feature', 'bigger-picture-right-thumb', 'bigger-picture-left-thumb')
+    @img.classList.add('bigger-picture-hidden')

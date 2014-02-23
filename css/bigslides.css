@@ -17,8 +17,33 @@
 
 .bigger-picture img {
   position: absolute;
+}
+
+.bigger-picture-hidden {
+  display: none;
+}
+
+.bigger-picture-feature {
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
   -webkit-transform: translateX(-50%) translateY(-50%);
+}
+
+.bigger-picture-right-thumb {
+  height: auto;
+  right: -6%;
+  top: 50%;
+  width: 10%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
+.bigger-picture-left-thumb {
+  height: auto;
+  left: -6%;
+  top: 50%;
+  width: 10%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
 }
