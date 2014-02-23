@@ -9,11 +9,15 @@
   ],
   "content_scripts": [
     {
-      "matches": [
-        "http://www.boston.com/bigpicture/*.html"
-      ],
+      "matches": ["http://www.boston.com/bigpicture/*.html"],
       "css": ["css/normalize.css","css/bigslides.css"],
       "js": [ "js/jquery.js", "js/biggerPicture.js", "js/sites/bigPicture.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["*://*.theatlantic.com/infocus/*"],
+      "css": ["css/normalize.css","css/bigslides.css"],
+      "js": [ "js/jquery.js", "js/biggerPicture.js", "js/sites/inFocus.js"],
       "run_at": "document_end"
     }
   ]
