@@ -39,7 +39,7 @@ class BiggerPicture.Gallery
 
   nav_left: (evt) =>
     evt?.preventDefault()
-    @set_current(@current_index + 1) if @current_index < @slides.length - 1
+    @set_current(@current_index - 1) if @current_index > 0
 
   test_keypress: (evt) =>
     switch evt.keyCode
