@@ -19,6 +19,12 @@
       "css": ["css/normalize.css","css/bigslides.css"],
       "js": [ "js/jquery.js", "js/biggerPicture.js", "js/sites/inFocus.js"],
       "run_at": "document_end"
+    },
+    {
+      "matches": ["*://*.thechive.com/*-photos*"],
+      "css": ["css/normalize.css","css/bigslides.css"],
+      "js": [ "js/jquery.js", "js/biggerPicture.js", "js/sites/theChive.js"],
+      "run_at": "document_end"
     }
   ]
 }
