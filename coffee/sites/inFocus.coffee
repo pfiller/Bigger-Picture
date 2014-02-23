@@ -14,8 +14,6 @@ class inFocus
         caption: container.find(".imgCap").remove("a").text()
       }
 
-    console.log "WTF"
-    console.dir images
     new BiggerPicture.Gallery(images)
 
 new inFocus()
